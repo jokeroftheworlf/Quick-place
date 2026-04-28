@@ -7,8 +7,8 @@ version = "1.0"
 group = "com.example"
 
 repositories {
-    maven { url = "https://maven.fabricmc.net/" }
     mavenCentral()
+    maven { url = "https://maven.fabricmc.net/" }
 }
 
 dependencies {
