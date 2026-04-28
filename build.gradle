@@ -23,45 +23,23 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
     }
-}        expand "version": project.version
-    }
+    withSourcesJar()
 }
 
 tasks.withType(JavaCompile).configureEach {
-	it.options.release = 21
-}
-
-java {
-	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-	// if it is present.
-	// If you remove this line, sources will not be generated.
-	withSourcesJar()
-
-	sourceCompatibility = JavaVersion.VERSION_21
-	targetCompatibility = JavaVersion.VERSION_21
+    it.options.release = 21
 }
 
 jar {
-	inputs.property "projectName", project.name
-
-	from("LICENSE") {
-		rename { "${it}_${project.name}"}
-	}
+    from("LICENSE") {
+        rename { "${it}_${project.name}" }
+    }
 }
 
-// configure the maven publication
 publishing {
-	publications {
-		create("mavenJava", MavenPublication) {
-			from components.java
-		}
-	}
-
-	// See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-	repositories {
-		// Add repositories to publish to here.
-		// Notice: This block does NOT have the same function as the block in the top level.
-		// The repositories here will be used for publishing your artifact, not for
-		// retrieving dependencies.
-	}
+    publications {
+        create("mavenJava", MavenPublication) {
+            from components.java
+        }
+    }
 }
