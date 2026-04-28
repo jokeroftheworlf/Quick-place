@@ -2,10 +2,11 @@
   "schemaVersion": 1,
   "id": "quickplace",
   "version": "1.0.0",
-  "name": "Quick Place",
-  "description": "Places slot 3 then slot 2 in one tick.",
+  "name": "QuickPlace",
+  "description": "Client quick place mod",
   "authors": ["you"],
   "license": "MIT",
+
   "environment": "client",
 
   "entrypoints": {
@@ -15,7 +16,7 @@
   },
 
   "depends": {
-    "fabricloader": ">=0.15.11",
+    "fabricloader": ">=0.16.0",
     "minecraft": "1.21.4",
     "java": ">=21",
     "fabric-api": "*"
