@@ -9,10 +9,10 @@
   "environment": "client",
 
   "entrypoints": {
-  "client": [
-    "com.example.QuickPlaceMod"
-  ]
-}
+    "client": [
+      "com.example.quickplace.QuickPlaceMod"
+    ]
+  },
 
   "depends": {
     "fabricloader": ">=0.15.11",
