@@ -3,10 +3,8 @@
   "id": "quickplace",
   "version": "1.0.0",
   "name": "Quick Place",
-  "description": "Places slot 3 then slot 2 in one tick using a keybind.",
-  "authors": [
-    "you"
-  ],
+  "description": "Places slot 3 then slot 2 in one tick.",
+  "authors": ["you"],
   "license": "MIT",
   "environment": "client",
 
@@ -22,5 +20,4 @@
     "java": ">=21",
     "fabric-api": "*"
   }
-}	}
 }
