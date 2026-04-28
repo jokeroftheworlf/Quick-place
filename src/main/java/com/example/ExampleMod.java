@@ -1,24 +1,63 @@
-package com.example;
+package com.example.quickplace;
 
-import net.fabricmc.api.ModInitializer;
+import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.util.Hand;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.HitResult;
 
-public class ExampleMod implements ModInitializer {
-	public static final String MOD_ID = "modid";
+import org.lwjgl.glfw.GLFW;
 
-	// This logger is used to write text to the console and the log file.
-	// It is considered best practice to use your mod id as the logger's name.
-	// That way, it's clear which mod wrote info, warnings, and errors.
-	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+public class QuickPlaceMod implements ClientModInitializer {
 
-	@Override
-	public void onInitialize() {
-		// This code runs as soon as Minecraft is in a mod-load-ready state.
-		// However, some things (like resources) may still be uninitialized.
-		// Proceed with mild caution.
+    private static KeyBinding key;
+    private int stage = 0;
 
-		LOGGER.info("Hello Fabric world!");
-	}
+    @Override
+    public void onInitializeClient() {
+
+        key = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+                "key.quickplace.activate",
+                GLFW.GLFW_KEY_GRAVE_ACCENT,
+                "category.quickplace"
+        ));
+
+        ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            if (client.player == null) return;
+
+            if (key.wasPressed()) {
+                stage = 1;
+            }
+
+            run(client);
+        });
+    }
+
+    private void run(MinecraftClient client) {
+        ClientPlayerEntity player = client.player;
+        if (player == null || client.interactionManager == null) return;
+
+        HitResult hit = client.crosshairTarget;
+        if (!(hit instanceof BlockHitResult blockHit)) return;
+
+        switch (stage) {
+
+            case 1 -> {
+                player.getInventory().selectedSlot = 2; // slot 3
+                client.interactionManager.interactBlock(player, Hand.MAIN_HAND, blockHit);
+                stage = 2;
+            }
+
+            case 2 -> {
+                player.getInventory().selectedSlot = 1; // slot 2
+                client.interactionManager.interactBlock(player, Hand.MAIN_HAND, blockHit);
+                stage = 0;
+            }
+        }
+    }
 }
